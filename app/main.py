@@ -3,6 +3,8 @@ from typing import Optional, List
 import os
 import sqlalchemy as sa
 from sqlmodel import SQLModel, Field, create_engine, Session, select, Relationship
+from fastapi.middleware.cors import CORSMiddleware
+
 
 # DB
 DATABASE_URL = os.environ["DATABASE_URL"]
@@ -52,6 +54,14 @@ class UserReadWithItems(UserBase):
 
 # setting up FastAPI
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173"],  # Vite の開発URL
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.on_event("startup")
 def on_startup():
